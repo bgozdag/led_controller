@@ -6,14 +6,7 @@ def log(output):
     print("{} - {}".format(datetime.datetime.now().strftime("%H:%M:%S.%f")[:-3], output))
 
 
-class SingletonClass(object):
-  def __new__(cls):
-    if not hasattr(cls, 'instance'):
-      cls.instance = super(SingletonClass, cls).__new__(cls)
-    return cls.instance
-
-
-class LEDColor(ABC, SingletonClass):
+class LEDColor(ABC):
     def execute(self):
         log(self.__class__.__name__)
 
@@ -147,7 +140,7 @@ class LEDController:
                 self.visible_state.stop()
                 self.visible_state = None
             self.visible_state = type(self.active_states[0])()
-        else:
+        elif len(self.active_states) == 0:
             self.visible_state.stop()
             self.visible_state = None
         for state in self.states:
